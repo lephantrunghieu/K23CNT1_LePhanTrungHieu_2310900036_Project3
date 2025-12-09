@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Quản lý Slide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+
+<div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-xl">
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
+    Quản lý Slide
+  </h1>
+
+  <a th:href="@{/admin/slide/new}"
+     class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 mb-4 inline-block">
+    + Thêm Slide mới
+  </a>
+
+  <a th:href="@{/admin/dashboard}"
+     class="ml-4 text-indigo-600 hover:text-indigo-800">
+    &larr; Quay lại Dashboard
+  </a>
+
+  <div class="overflow-x-auto mt-6">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead>
+      <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <th class="py-3 px-6 text-left">ID</th>
+        <th class="py-3 px-6 text-left">Tiêu đề</th>
+        <th class="py-3 px-6 text-center">Ảnh</th>
+        <th class="py-3 px-6 text-left">Link</th>
+        <th class="py-3 px-6 text-center">Trạng thái</th>
+        <th class="py-3 px-6 text-center">Hành động</th>
+      </tr>
+      </thead>
+
+      <tbody class="text-gray-600 text-sm font-light">
+
+      <tr th:each="s : ${listSlide}" class="border-b border-gray-200 hover:bg-gray-100">
+
+        <td th:text="${s.maslide}" class="py-3 px-6 text-left font-medium"></td>
+
+        <td th:text="${s.tieude}" class="py-3 px-6 text-left"></td>
+
+        <td class="py-3 px-6 text-center">
+
+          <img th:src="@{${s.hinhanh} + '?v=' + ${#dates.createNow().time}}"
+               class="h-14 w-28 object-cover rounded shadow inline-block">
+        </td>
+
+        <td th:text="${s.lienket}" class="py-3 px-6 text-left text-blue-600 underline"></td>
+
+        <td class="py-3 px-6 text-center">
+          <span th:if="${s.trangthai}"
+                class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+            Hiển thị
+          </span>
+          <span th:if="${!s.trangthai}"
+                class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+            Ẩn
+          </span>
+        </td>
+
+        <td class="py-3 px-6 text-center whitespace-nowrap">
+          <a th:href="@{'/admin/slide/edit/' + ${s.maslide}}"
+             class="text-indigo-600 hover:text-indigo-800 font-medium mr-3">
+            Sửa
+          </a>
+
+          <a th:href="@{'/admin/slide/delete/' + ${s.maslide}}"
+             onclick="return confirm('Bạn có chắc chắn muốn xóa slide này?')"
+             class="text-red-600 hover:text-red-800 font-medium">
+            Xóa
+          </a>
+        </td>
+
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div th:if="${#lists.isEmpty(listSlide)}"
+         class="text-center py-6 text-gray-500 italic">
+      Chưa có slide nào trong hệ thống.
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -21,6 +21,33 @@ public class KhachhangService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public void dangKyKhachHang(
+            String taikhoan,
+            String matkhau,
+            String tenkh,
+            String diachi,
+            String sdt
+    ) {
+        if (taikhoanRepository.findByTaikhoan(taikhoan) != null) {
+            throw new RuntimeException("Tài khoản đã tồn tại!");
+        }
+
+        Taikhoan tk = new Taikhoan();
+        tk.setTaikhoan(taikhoan);
+        tk.setMatkhau(passwordEncoder.encode(matkhau));
+        tk.setQuyen(false);
+
+        taikhoanRepository.save(tk);
+
+        Khachhang kh = new Khachhang();
+        kh.setTenkh(tenkh);
+        kh.setDiachi(diachi);
+        kh.setSdt(sdt);
+        kh.setTaikhoan(tk);
+
+        khachhangRepository.save(kh);
+    }
+
     @Transactional
     public Khachhang saveNewCustomer(Khachhang khachhang, String plainPassword) {
 

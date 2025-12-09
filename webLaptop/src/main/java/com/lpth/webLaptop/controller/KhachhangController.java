@@ -87,7 +87,9 @@ public class KhachhangController {
     @GetMapping("/delete/{id}")
     public String deleteKhachhang(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
+            String username = khachhangRepository.findById(id).get().getTaikhoan().getTaikhoan();
             khachhangRepository.deleteById(id);
+            taikhoanRepository.deleteById(username);
             ra.addFlashAttribute("message", "Xóa khách hàng ID " + id + " thành công!");
         } catch (Exception e) {
             ra.addFlashAttribute("message", "Lỗi: Không thể xóa khách hàng ID " + id + ".");

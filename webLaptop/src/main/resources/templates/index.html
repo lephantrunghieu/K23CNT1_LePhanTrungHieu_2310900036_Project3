@@ -1,51 +1,139 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Trang Chủ - Web Bán MT</title>
+    <title>Trang Chủ - Web Bán Máy Tính</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-8 font-sans">
 
-<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-xl">
+<body class="bg-gray-100 font-sans">
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Chào mừng đến với Web Bán Máy Tính</h1>
+<nav class="bg-indigo-700 p-4 shadow text-white">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="/" class="text-xl font-bold">💻 Web Bán Máy Tính</a>
 
-    <div class="mb-4 text-right">
-        <div sec:authorize="isAuthenticated()">
-            <span class="text-gray-600 mr-4">Xin chào, <span sec:authentication="name" class="font-semibold text-blue-600">User</span>!</span>
+        <div>
+            <div sec:authorize="isAuthenticated()" class="flex items-center gap-3">
+                <span>Xin chào,
+                    <b sec:authentication="name"></b>
+                </span>
 
-            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" class="text-sm bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded transition duration-200 mr-2">Quản trị (Admin)</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}"
+                   class="bg-yellow-400 text-black px-3 py-1 rounded text-sm">
+                    Admin
+                </a>
 
-            <form th:action="@{/logout}" method="post" class="inline">
-                <button type="submit" class="text-sm bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded transition duration-200">Đăng xuất</button>
-            </form>
-        </div>
+                <form th:action="@{/logout}" method="post">
+                    <button class="bg-red-500 px-3 py-1 rounded text-sm">
+                        Đăng xuất
+                    </button>
+                </form>
+            </div>
 
-        <div sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}" class="text-indigo-600 hover:text-indigo-800 font-medium">Đăng nhập</a>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="bg-white text-indigo-700 px-4 py-1 rounded">
+                    Đăng nhập
+                </a>
+            </div>
         </div>
     </div>
+</nav>
 
-    <hr class="my-6"/>
+<div class="relative max-w-7xl mx-auto mt-6 overflow-hidden rounded-xl shadow">
+    <div id="carousel" class="flex transition-transform duration-700">
 
-    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Danh sách Hãng Máy Tính</h2>
+        <div th:each="s : ${listSlide}" class="min-w-full relative">
+            <a th:href="@{${s.lienket}}">
+                <img th:src="@{${s.hinhanh}}" class="w-full h-[380px] object-cover">
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200">
-            <thead>
-            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th class="py-3 px-6 text-left">Mã Hãng</th>
-                <th class="py-3 px-6 text-left">Tên Hãng</th>
-            </tr>
-            </thead>
-            <tbody class="text-gray-600 text-sm font-light">
-            <tr th:each="hang : ${brands}" class="border-b border-gray-200 hover:bg-gray-100">
-                <td th:text="${hang.mahang}" class="py-3 px-6 text-left whitespace-nowrap font-medium">1</td>
-                <td th:text="${hang.tenhang}" class="py-3 px-6 text-left">Asus</td>
-            </tr>
-            </tbody>
-        </table>
+                <div class="absolute inset-0 bg-black/40 flex items-end">
+                    <h2 class="text-white text-2xl font-bold p-6"
+                        th:text="${s.tieude}">
+                    </h2>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2
+            bg-white/70 p-3 rounded-full">❮</button>
+
+    <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2
+            bg-white/70 p-3 rounded-full">❯</button>
+</div>
+
+<div class="max-w-7xl mx-auto mt-12 px-4">
+    <h2 class="text-2xl font-bold mb-6">🔥 Hãng nổi bật</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <a th:each="h : ${brands}" th:href="@{'/category/' + ${h.duongdan}}"
+           class="bg-white shadow rounded-lg p-6 text-center hover:scale-105 transition">
+
+            <h3 class="font-bold text-lg text-indigo-600"
+                th:text="${h.tenhang}">
+                ASUS
+            </h3>
+        </a>
     </div>
 </div>
+
+<div class="max-w-7xl mx-auto mt-14 px-4">
+    <h2 class="text-2xl font-bold mb-6">💎 Sản phẩm nổi bật</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+        <div th:each="mt : ${listMaytinh}"
+             class="bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+
+            <img th:src="@{${mt.hinhanh}}"
+                 class="w-full h-52 object-cover">
+
+            <div class="p-4">
+                <h3 class="font-semibold text-gray-800"
+                    th:text="${mt.tenmt}">
+                    Laptop Gaming
+                </h3>
+
+                <p class="text-red-600 font-bold mt-2"
+                   th:text="${#numbers.formatDecimal(mt.gia, 0, 'POINT', 0, 'COMMA')} + ' ₫'">
+                    25,000,000 ₫
+                </p>
+
+                <a th:href="@{'/product/' + ${mt.mamt}}"
+                   class="block text-center mt-3 bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+                    Xem chi tiết
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="bg-gray-800 text-gray-300 mt-20 p-6 text-center">
+    © 2025 Web Bán Máy Tính | All Rights Reserved
+</footer>
+
+<script>
+    let index = 0;
+    const carousel = document.getElementById("carousel");
+    const total = carousel.children.length;
+
+    function showSlide(i) {
+        index = (i + total) % total;
+        carousel.style.transform = `translateX(${-index * 100}%)`;
+    }
+
+    function nextSlide() {
+        showSlide(index + 1);
+    }
+
+    function prevSlide() {
+        showSlide(index - 1);
+    }
+
+    setInterval(nextSlide, 4000);
+</script>
+
 </body>
 </html>

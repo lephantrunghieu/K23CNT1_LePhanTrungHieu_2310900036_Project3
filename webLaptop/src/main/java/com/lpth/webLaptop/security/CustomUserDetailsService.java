@@ -22,19 +22,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String taikhoan) throws UsernameNotFoundException {
-        // 1. Tìm tài khoản trong database
         Taikhoan account = taikhoanRepository.findByTaikhoan(taikhoan);
 
         if (account == null) {
             throw new UsernameNotFoundException("Không tìm thấy tài khoản: " + taikhoan);
         }
 
-        // 2. Xác định quyền (Role)
         String role = (account.getQuyen() != null && account.getQuyen()) ? "ADMIN" : "USER";
 
         Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));
 
-        // 3. Trả về đối tượng UserDetails của Spring Security
         return new User(
                 account.getTaikhoan(),
                 account.getMatkhau(),

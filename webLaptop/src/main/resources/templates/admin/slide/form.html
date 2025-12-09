@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${pageTitle}">Form Slide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl">
+
+  <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2"
+      th:text="${pageTitle}">
+    Form Slide
+  </h1>
+
+  <form th:action="@{/admin/slide/save}"
+        method="post"
+        enctype="multipart/form-data"
+        th:object="${slide}"
+        class="space-y-4">
+
+    <input type="hidden" th:field="*{maslide}">
+    <input type="hidden" th:field="*{hinhanh}">
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Tiêu đề</label>
+      <input type="text" th:field="*{tieude}" required
+             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Link khi bấm</label>
+      <input type="text" th:field="*{lienket}"
+             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Ảnh Slide</label>
+      <input type="file" name="imageUpload"
+             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+
+      <div th:if="${slide.hinhanh != null}" class="mt-2">
+        <p class="text-sm text-gray-500 mb-1">Ảnh hiện tại:</p>
+        <img th:src="@{${slide.hinhanh}}"
+             class="h-24 w-full object-cover rounded shadow">
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" th:field="*{trangthai}"
+             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+      <label class="ml-2 text-sm text-gray-700">Hiển thị slide</label>
+    </div>
+
+    <div class="pt-4 flex justify-end space-x-3">
+      <button type="submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+        Lưu Slide
+      </button>
+
+      <a th:href="@{/admin/slide}"
+         class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded transition duration-200">
+        Hủy
+      </a>
+    </div>
+
+  </form>
+
+</div>
+
+</body>
+</html>
