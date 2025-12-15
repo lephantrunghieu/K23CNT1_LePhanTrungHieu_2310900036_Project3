@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết hóa đơn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<h1 class="text-3xl font-bold mb-6 text-indigo-700">
+  🧾 Chi tiết hóa đơn #<span th:text="${order.sohd}"></span>
+</h1>
+
+<div class="bg-white p-6 shadow-md rounded-lg mb-6">
+  <h2 class="text-xl font-semibold mb-3 text-gray-700">👤 Thông tin khách hàng</h2>
+
+  <p><b>Tên:</b> <span th:text="${kh.tenkh}"></span></p>
+  <p><b>Địa chỉ:</b> <span th:text="${kh.diachi}"></span></p>
+  <p><b>SĐT:</b> <span th:text="${kh.sdt}"></span></p>
+</div>
+
+<div class="bg-white p-6 shadow-md rounded-lg">
+  <h2 class="text-xl font-semibold mb-3 text-gray-700">📦 Danh sách sản phẩm</h2>
+
+  <table class="w-full text-left">
+    <thead>
+    <tr class="border-b bg-gray-50">
+      <th class="p-2">Sản phẩm</th>
+      <th class="p-2">Hình ảnh</th>
+      <th class="p-2">Giá</th>
+      <th class="p-2">Số lượng</th>
+      <th class="p-2">Thành tiền</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item : ${items}" class="border-b hover:bg-gray-50">
+
+      <td class="p-2 font-semibold text-indigo-700"
+          th:text="${item.maytinhEntity.tenmt}">
+      </td>
+
+      <td class="p-2">
+        <img th:src="@{${item.maytinhEntity.hinhanh}}"
+             class="w-20 h-20 object-cover rounded shadow">
+      </td>
+
+      <td class="p-2 text-green-600 font-bold"
+          th:text="${#numbers.formatDecimal(item.maytinhEntity.gia, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">
+      </td>
+
+      <td class="p-2" th:text="${item.soluong}"></td>
+
+      <td class="p-2 font-bold text-red-600"
+          th:text="${#numbers.formatDecimal(item.maytinhEntity.gia * item.soluong, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<form th:action="@{/admin/orders/update}"
+      method="post"
+      class="mt-6 bg-white p-6 shadow-md rounded-lg">
+
+  <input type="hidden" name="sohd" th:value="${order.sohd}"/>
+
+  <label class="font-semibold text-gray-700">🔧 Trạng thái:</label>
+  <select name="trangthai" class="ml-2 p-2 border rounded-md">
+    <option value="1" th:selected="${order.trangthai == 1}">Chờ xử lý</option>
+    <option value="2" th:selected="${order.trangthai == 2}">Đã duyệt</option>
+    <option value="3" th:selected="${order.trangthai == 3}">Đã hủy</option>
+  </select>
+
+  <button class="ml-4 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+    Cập nhật
+  </button>
+</form>
+
+</body>
+</html>

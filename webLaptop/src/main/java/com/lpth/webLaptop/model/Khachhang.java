@@ -26,15 +26,43 @@ public class Khachhang {
 
     public Khachhang() {}
 
-    public Integer getMakh() { return makh; }
-    public void setMakh(Integer makh) { this.makh = makh; }
-    public String getTenkh() { return tenkh; }
-    public void setTenkh(String tenkh) { this.tenkh = tenkh; }
-    public String getDiachi() { return diachi; }
-    public void setDiachi(String diachi) { this.diachi = diachi; }
-    public String getSdt() { return sdt; }
-    public void setSdt(String sdt) { this.sdt = sdt; }
+    public Integer getMakh() {
+        return makh;
+    }
 
-    public Taikhoan getTaikhoan() { return taikhoan; }
-    public void setTaikhoan(Taikhoan taikhoan) { this.taikhoan = taikhoan; }
+    public void setMakh(Integer makh) {
+        this.makh = makh;
+    }
+
+    public String getTenkh() {
+        return tenkh;
+    }
+
+    public void setTenkh(String tenkh) {
+        this.tenkh = tenkh;
+    }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public Taikhoan getTaikhoan() {
+        return taikhoan;
+    }
+
+    public void setTaikhoan(Taikhoan taikhoan) {
+        this.taikhoan = taikhoan;
+    }
 }

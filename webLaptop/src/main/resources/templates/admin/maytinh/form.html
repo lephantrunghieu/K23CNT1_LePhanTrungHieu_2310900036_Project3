@@ -20,13 +20,13 @@
     </div>
 
     <div>
-      <label for="hang" class="block text-sm font-medium text-gray-700">Hãng sản xuất</label>
-      <select th:field="*{hang}" id="hang" required
+      <label for="Hang" class="block text-sm font-medium text-gray-700">Hãng sản xuất</label>
+      <select th:field="*{Hang}" id="Hang" required
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-white">
         <option th:each="h : ${listHang}"
                 th:value="${h.mahang}"
                 th:text="${h.tenhang}"
-                th:selected="${maytinh.hang != null and maytinh.hang.mahang == h.mahang}">
+                th:selected="${maytinh.Hang != null and maytinh.Hang.mahang == h.mahang}">
           Hãng
         </option>
       </select>

@@ -18,11 +18,11 @@ import java.util.Set;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private TaikhoanRepository taikhoanRepository;
+    private TaikhoanRepository TaikhoanRepository;
 
     @Override
     public UserDetails loadUserByUsername(String taikhoan) throws UsernameNotFoundException {
-        Taikhoan account = taikhoanRepository.findByTaikhoan(taikhoan);
+        Taikhoan account = TaikhoanRepository.findByTaikhoan(taikhoan);
 
         if (account == null) {
             throw new UsernameNotFoundException("Không tìm thấy tài khoản: " + taikhoan);

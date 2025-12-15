@@ -13,15 +13,17 @@ public class HomeController {
 
     @Autowired
     private HangRepository hangRepository;
+
     @Autowired
     private SlideRepository slideRepository;
+
     @Autowired
     private MaytinhRepository mayTinhRepository;
 
     @GetMapping("/")
     public String listBrands(Model model) {
         model.addAttribute("brands", hangRepository.findAll());
-        model.addAttribute("listSlide", slideRepository.findByTrangthaiTrue());
+        model.addAttribute("listSlide", slideRepository.findByTrangthaiIsTrue());
         model.addAttribute("listMaytinh", mayTinhRepository.findTop8ByOrderByMamtDesc());
         return "index";
     }

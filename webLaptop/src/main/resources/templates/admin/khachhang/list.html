@@ -32,18 +32,18 @@
             </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
-            <tr th:each="khachhang : ${listKhachhang}" class="border-b border-gray-200 hover:bg-gray-100">
-                <td th:text="${khachhang.makh}" class="py-3 px-6 text-left whitespace-nowrap">1</td>
-                <td th:text="${khachhang.tenkh}" class="py-3 px-6 text-left">Nguyễn Văn A</td>
-                <td th:text="${khachhang.diachi}" class="py-3 px-6 text-left">Hà Nội</td>
-                <td th:text="${khachhang.sdt}" class="py-3 px-6 text-left">090xxxxxxx</td>
-                <td th:text="${khachhang.taikhoan.taikhoan}" class="py-3 px-6 text-left">user_a</td>
+            <tr th:each="Khachhang : ${listKhachhang}" class="border-b border-gray-200 hover:bg-gray-100">
+                <td th:text="${Khachhang.makh}" class="py-3 px-6 text-left whitespace-nowrap">1</td>
+                <td th:text="${Khachhang.tenkh}" class="py-3 px-6 text-left">Nguyễn Văn A</td>
+                <td th:text="${Khachhang.diachi}" class="py-3 px-6 text-left">Hà Nội</td>
+                <td th:text="${Khachhang.sdt}" class="py-3 px-6 text-left">090xxxxxxx</td>
+                <td th:text="${Khachhang.taikhoan.taikhoan}" class="py-3 px-6 text-left">user_a</td>
 
                 <td class="py-3 px-6 text-center">
-                    <a th:href="@{'/admin/khachhang/edit/' + ${khachhang.makh}}" class="text-indigo-600 hover:text-indigo-800 mr-3">
+                    <a th:href="@{'/admin/khachhang/edit/' + ${Khachhang.makh}}" class="text-indigo-600 hover:text-indigo-800 mr-3">
                         Sửa
                     </a>
-                    <a th:href="@{'/admin/khachhang/delete/' + ${khachhang.makh}}"
+                    <a th:href="@{'/admin/khachhang/delete/' + ${Khachhang.makh}}"
                        onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này?')"
                        class="text-red-600 hover:text-red-800">
                         Xóa

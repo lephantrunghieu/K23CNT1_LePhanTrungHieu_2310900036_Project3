@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- HEADER -->
+<th:block th:fragment="header">
+  <nav class="bg-indigo-700 p-4 shadow text-white">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-xl font-bold">💻 Web Bán Máy Tính</a>
+
+      <div class="flex items-center gap-3">
+        <div sec:authorize="isAuthenticated()" class="flex items-center gap-3">
+                <span>Xin chào,
+                    <b sec:authentication="name"></b>
+                </span>
+
+          <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}"
+             class="bg-yellow-400 text-black px-3 py-1 rounded text-sm">
+            Admin
+          </a>
+
+          <form th:action="@{/logout}" method="post">
+            <button class="bg-red-500 px-3 py-1 rounded text-sm">
+              Đăng xuất
+            </button>
+          </form>
+
+          <div class="ml">
+            <a th:href="@{/hoadon}" class="bg-white text-indigo-700 px-4 py-1 rounded">
+              Đơn hàng đã đặt
+            </a>
+          </div>
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+          <a th:href="@{/login}" class="bg-white text-indigo-700 px-4 py-1 rounded">
+            Đăng nhập
+          </a>
+        </div>
+
+        <div class="ml">
+          <a th:href="@{/cart}" class="bg-white text-indigo-700 px-4 py-1 rounded">
+            Giỏ hàng
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</th:block>
+
+<!-- FOOTER -->
+<th:block th:fragment="footer">
+  <footer class="bg-gray-800 text-gray-300 mt-20 p-6 text-center">
+    © 2025 Web Bán Máy Tính | All Rights Reserved
+  </footer>
+</th:block>
+
+<!-- SLIDE -->
+<th:block th:fragment="slide">
+  <div class="relative max-w-7xl mx-auto mt-6 overflow-hidden rounded-xl shadow">
+    <div id="carousel" class="flex transition-transform duration-700">
+
+      <div th:each="s : ${listSlide}" class="min-w-full relative">
+        <a th:href="@{${s.lienket}}">
+          <img th:src="@{${s.hinhanh}}" class="w-full h-[380px] object-cover">
+
+          <div class="absolute inset-0 bg-black/40 flex items-end">
+            <h2 class="text-white text-2xl font-bold p-6"
+                th:text="${s.tieude}">
+            </h2>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2
+            bg-white/70 p-3 rounded-full">❮</button>
+
+    <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2
+            bg-white/70 p-3 rounded-full">❯</button>
+  </div>
+</th:block>
+
+<!-- SCRIPT -->
+<th:block th:fragment="script">
+  <script>
+    let index = 0;
+    const carousel = document.getElementById("carousel");
+    const total = carousel.children.length;
+
+    function showSlide(i) {
+      index = (i + total) % total;
+      carousel.style.transform = `translateX(${-index * 100}%)`;
+    }
+
+    function nextSlide() {
+      showSlide(index + 1);
+    }
+
+    function prevSlide() {
+      showSlide(index - 1);
+    }
+
+    setInterval(nextSlide, 4000);
+  </script>
+</th:block>
+
+</html>

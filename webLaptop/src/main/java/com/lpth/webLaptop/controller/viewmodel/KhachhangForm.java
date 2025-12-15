@@ -7,27 +7,27 @@ public class KhachhangForm {
     private String password;
     private String username;
 
-    public Khachhang getKhachhang() {
+    public Khachhang getkhachhang() {
         return khachhang;
     }
 
-    public void setKhachhang(Khachhang khachhang) {
+    public void setkhachhang(Khachhang khachhang) {
         this.khachhang = khachhang;
     }
 
-    public String getPassword() {
+    public String getpassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setpassword(String password) {
         this.password = password;
     }
 
-    public String getUsername() {
+    public String getusername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setusername(String username) {
         this.username = username;
     }
 }

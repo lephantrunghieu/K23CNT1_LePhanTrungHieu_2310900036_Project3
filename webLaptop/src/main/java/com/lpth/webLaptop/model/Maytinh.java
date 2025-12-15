@@ -28,7 +28,6 @@ public class Maytinh {
     @JoinColumn(name = "hang")
     private Hang hang;
 
-    public Maytinh() {}
 
     public Integer getMamt() {
         return mamt;

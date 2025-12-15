@@ -30,16 +30,16 @@
       </tr>
       </thead>
       <tbody class="text-gray-600 text-sm font-light">
-      <tr th:each="hang : ${listHang}" class="border-b border-gray-200 hover:bg-gray-100">
-        <td th:text="${hang.mahang}" class="py-3 px-6 text-left whitespace-nowrap">1</td>
-        <td th:text="${hang.tenhang}" class="py-3 px-6 text-left">Asus</td>
-        <td th:text="${hang.duongdan}" class="py-3 px-6 text-left">asus</td>
+      <tr th:each="Hang : ${listHang}" class="border-b border-gray-200 hover:bg-gray-100">
+        <td th:text="${Hang.mahang}" class="py-3 px-6 text-left whitespace-nowrap">1</td>
+        <td th:text="${Hang.tenhang}" class="py-3 px-6 text-left">Asus</td>
+        <td th:text="${Hang.duongdan}" class="py-3 px-6 text-left">asus</td>
 
         <td class="py-3 px-6 text-center">
-          <a th:href="@{'/admin/hang/edit/' + ${hang.mahang}}" class="text-indigo-600 hover:text-indigo-800 mr-3">
+          <a th:href="@{'/admin/hang/edit/' + ${Hang.mahang}}" class="text-indigo-600 hover:text-indigo-800 mr-3">
             Sửa
           </a>
-          <a th:href="@{'/admin/hang/delete/' + ${hang.mahang}}"
+          <a th:href="@{'/admin/hang/delete/' + ${Hang.mahang}}"
              onclick="return confirm('Bạn có chắc chắn muốn xóa hãng này? Lưu ý: Tất cả các Máy tính thuộc hãng này cũng sẽ bị xóa!')"
              class="text-red-600 hover:text-red-800">
             Xóa

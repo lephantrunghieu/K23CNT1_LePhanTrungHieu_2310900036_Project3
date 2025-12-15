@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý hóa đơn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+<h1 class="text-3xl font-bold mb-6">Quản lý Hóa đơn</h1>
+
+<table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+  <thead class="bg-gray-200">
+  <tr>
+    <th class="p-3">Số HĐ</th>
+    <th class="p-3">Mã KH</th>
+    <th class="p-3">Ngày đặt</th>
+    <th class="p-3">Trạng thái</th>
+    <th class="p-3">Hành động</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="o : ${orders}" class="border-b">
+    <td class="p-3" th:text="${o.sohd}"></td>
+    <td class="p-3" th:text="${o.Khachhang}"></td>
+    <td class="p-3" th:text="${#dates.format(o.ngaydat,'dd/MM/yyyy')}"></td>
+
+    <td class="p-3">
+        <span th:switch="${o.trangthai}">
+          <span th:case="1" class="text-blue-600 font-semibold">Chờ xử lý</span>
+          <span th:case="2" class="text-green-600 font-semibold">Đã duyệt</span>
+          <span th:case="3" class="text-red-600 font-semibold">Đã hủy</span>
+        </span>
+    </td>
+
+    <td class="p-3">
+      <a th:href="@{'/admin/orders/' + ${o.sohd}}"
+         class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+        Xem
+      </a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

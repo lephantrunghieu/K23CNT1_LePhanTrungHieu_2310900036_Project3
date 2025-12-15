@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Hóa đơn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @media print {
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-lg">
+
+  <h1 class="text-3xl font-bold mb-4 text-center">HÓA ĐƠN THANH TOÁN</h1>
+
+  <p><b>Số hóa đơn:</b> <span th:text="${order.sohd}"></span></p>
+  <p><b>Ngày đặt:</b> <span th:text="${#dates.format(order.ngaydat, 'dd/MM/yyyy HH:mm')}"></span></p>
+
+  <hr class="my-4">
+
+  <h2 class="text-xl font-semibold mb-2">Thông tin khách hàng</h2>
+  <p><b>Họ tên:</b> <span th:text="${kh.tenkh}"></span></p>
+  <p><b>Địa chỉ:</b> <span th:text="${kh.diachi}"></span></p>
+  <p><b>Số điện thoại:</b> <span th:text="${kh.sdt}"></span></p>
+
+  <hr class="my-4">
+
+  <h2 class="text-xl font-semibold mb-2">Danh sách sản phẩm</h2>
+
+  <table class="w-full text-left border">
+    <thead>
+    <tr class="bg-gray-200">
+      <th class="p-2 border">Hình ảnh</th>
+      <th class="p-2 border">Tên máy</th>
+      <th class="p-2 border">Số lượng</th>
+      <th class="p-2 border">Giá</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item : ${items}">
+      <td class="p-2 border">
+        <img th:src="@{${item.maytinhEntity.hinhanh}}"
+             class="w-20 h-20 object-cover rounded shadow">
+      </td>
+      <td class="p-2 border" th:text="${item.maytinhEntity.tenmt}"></td>
+      <td class="p-2 border" th:text="${item.soluong}"></td>
+      <td class="p-2 border"
+          th:text="${#numbers.formatDecimal(item.maytinhEntity.gia, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3 class="text-right text-xl mt-4">
+    Tổng tiền:
+    <span class="font-bold text-red-600"
+          th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span>
+  </h3>
+
+  <div class="text-center mt-6 no-print">
+    <button onclick="window.print()"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+      In hóa đơn
+    </button>
+
+    <a th:href="@{/}" class="ml-4 text-blue-700 hover:underline">Về trang chủ</a>
+  </div>
+</div>
+
+</body>
+</html>

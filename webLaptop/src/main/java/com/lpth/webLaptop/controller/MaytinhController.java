@@ -42,6 +42,7 @@ public class MaytinhController {
         if (originalFilename != null && originalFilename.contains(".")) {
             extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         }
+
         String fileName = UUID.randomUUID().toString() + extension;
 
         Path uploadPath = Paths.get(UPLOAD_DIR);
@@ -74,9 +75,10 @@ public class MaytinhController {
     }
 
     @PostMapping("/save")
-    public String saveMaytinh(@ModelAttribute("maytinh") Maytinh maytinh,
-                              @RequestParam("imageUpload") MultipartFile imageUpload, // Tham số nhận file
-                              RedirectAttributes ra) {
+    public String saveMaytinh(
+            @ModelAttribute("maytinh") Maytinh maytinh,
+            @RequestParam("imageUpload") MultipartFile imageUpload,
+            RedirectAttributes ra) {
 
         String oldImagePath = maytinh.getHinhanh();
 
@@ -89,29 +91,36 @@ public class MaytinhController {
             }
 
             maytinhRepository.save(maytinh);
-            String message = (maytinh.getMamt() == null) ? "Thêm sản phẩm thành công!" : "Cập nhật sản phẩm thành công!";
+
+            String message = (maytinh.getMamt() == null)
+                    ? "Thêm sản phẩm thành công!"
+                    : "Cập nhật sản phẩm thành công!";
+
             ra.addFlashAttribute("message", message);
         } catch (IOException e) {
             ra.addFlashAttribute("message", "Lỗi Upload File: " + e.getMessage());
-            e.printStackTrace();
-            return "redirect:/admin/maytinh/new"; // Trở về form nếu lỗi file
+            return "redirect:/admin/maytinh/new";
         } catch (Exception e) {
             ra.addFlashAttribute("message", "Lỗi: Không thể lưu sản phẩm.");
-            e.printStackTrace();
         }
+
         return "redirect:/admin/maytinh";
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+    public String showEditForm(@PathVariable("id") Integer id,
+                                    Model model,
+                                    RedirectAttributes ra) {
         try {
             Maytinh maytinh = maytinhRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Sản phẩm không tồn tại: " + id));
+
             List<Hang> listHang = hangRepository.findAll();
 
             model.addAttribute("maytinh", maytinh);
             model.addAttribute("listHang", listHang);
             model.addAttribute("pageTitle", "Chỉnh sửa Sản phẩm (ID: " + id + ")");
+
             return "admin/maytinh/form";
 
         } catch (Exception e) {
@@ -120,14 +129,16 @@ public class MaytinhController {
         }
     }
 
-    // 5. Xóa
     @GetMapping("/delete/{id}")
-    public String deleteMaytinh(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String deleteMaytinh(@PathVariable("id") Integer id,
+                                     RedirectAttributes ra) {
         try {
             maytinhRepository.deleteById(id);
-            ra.addFlashAttribute("message", "Xóa sản phẩm ID " + id + " thành công!");
+            ra.addFlashAttribute("message",
+                    "Xóa sản phẩm ID " + id + " thành công!");
         } catch (Exception e) {
-            ra.addFlashAttribute("message", "Lỗi: Không thể xóa sản phẩm ID " + id + ". Vui lòng kiểm tra ràng buộc.");
+            ra.addFlashAttribute("message",
+                    "Lỗi: Không thể xóa sản phẩm ID " + id + ". Vui lòng kiểm tra ràng buộc.");
         }
         return "redirect:/admin/maytinh";
     }

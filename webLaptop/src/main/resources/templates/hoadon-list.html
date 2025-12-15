@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Danh sách hóa đơn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+<div class="max-w-6xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-xl">
+
+  <h1 class="text-3xl font-bold text-indigo-700 mb-6">Danh sách hóa đơn</h1>
+
+  <table class="w-full text-left border-collapse shadow-sm">
+    <thead>
+    <tr class="bg-indigo-600 text-white">
+      <th class="p-3">Mã HĐ</th>
+      <th class="p-3">Khách hàng</th>
+      <th class="p-3">Ngày lập</th>
+      <th class="p-3 text-center">Trạng thái</th>
+      <th class="p-3 text-center">Chi tiết</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="o : ${orders}"
+        class="border-b hover:bg-gray-50 transition">
+
+      <td class="p-3 font-semibold text-gray-800"
+          th:text="${o.sohd}"></td>
+
+      <td class="p-3"
+          th:text="${o.KhachhangEntity.tenkh}"></td>
+
+      <td class="p-3"
+          th:text="${#dates.format(o.ngaydat,'dd/MM/yyyy')}"></td>
+
+      <td class="p-3 text-center">
+                <span th:class="${o.trangthai == 1 ? 'bg-yellow-200 text-yellow-800'
+                 : (o.trangthai == 2 ? 'bg-green-200 text-green-800'
+                 : 'bg-red-200 text-red-800')}"
+                      class="px-3 py-1 rounded-full font-semibold">
+    <span th:text="${o.trangthai == 1 ? 'Chờ xử lý'
+                 : (o.trangthai == 2 ? 'Đã duyệt'
+                 : 'Đã hủy')}"></span>
+</span>
+      </td>
+
+      <td class="p-3 text-center">
+        <a th:href="@{'/order/' + ${o.sohd}}"
+           class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+          Xem
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+</body>
+</html>

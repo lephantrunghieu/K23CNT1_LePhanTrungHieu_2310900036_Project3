@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class KhachhangService {
 
     @Autowired
-    private KhachhangRepository khachhangRepository;
+    private KhachhangRepository KhachhangRepository;
 
     @Autowired
-    private TaikhoanRepository taikhoanRepository;
+    private TaikhoanRepository TaikhoanRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,7 +28,7 @@ public class KhachhangService {
             String diachi,
             String sdt
     ) {
-        if (taikhoanRepository.findByTaikhoan(taikhoan) != null) {
+        if (TaikhoanRepository.findByTaikhoan(taikhoan) != null) {
             throw new RuntimeException("Tài khoản đã tồn tại!");
         }
 
@@ -37,7 +37,7 @@ public class KhachhangService {
         tk.setMatkhau(passwordEncoder.encode(matkhau));
         tk.setQuyen(false);
 
-        taikhoanRepository.save(tk);
+        TaikhoanRepository.save(tk);
 
         Khachhang kh = new Khachhang();
         kh.setTenkh(tenkh);
@@ -45,22 +45,22 @@ public class KhachhangService {
         kh.setSdt(sdt);
         kh.setTaikhoan(tk);
 
-        khachhangRepository.save(kh);
+        KhachhangRepository.save(kh);
     }
 
     @Transactional
-    public Khachhang saveNewCustomer(Khachhang khachhang, String plainPassword) {
+    public Khachhang saveNewCustomer(Khachhang Khachhang, String plainPassword) {
 
         Taikhoan newAccount = new Taikhoan();
-        String username = khachhang.getTaikhoan().getTaikhoan();
+        String username = Khachhang.getTaikhoan().getTaikhoan();
 
         newAccount.setTaikhoan(username);
-        newAccount.setMatkhau(passwordEncoder.encode(plainPassword)); // Mã hóa mật khẩu
+        newAccount.setMatkhau(passwordEncoder.encode(plainPassword));
         newAccount.setQuyen(false);
 
-        taikhoanRepository.save(newAccount);
+        TaikhoanRepository.save(newAccount);
 
-        khachhang.setTaikhoan(newAccount);
-        return khachhangRepository.save(khachhang);
+        Khachhang.setTaikhoan(newAccount);
+        return KhachhangRepository.save(Khachhang);
     }
 }

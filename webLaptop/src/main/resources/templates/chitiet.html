@@ -6,60 +6,9 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-<nav class="bg-indigo-700 p-4 shadow text-white">
-  <div class="max-w-7xl mx-auto flex justify-between items-center">
-    <a href="/" class="text-xl font-bold">💻 Web Bán Máy Tính</a>
+<div th:replace="layout/fragments :: header"></div>
 
-    <div>
-      <div sec:authorize="isAuthenticated()" class="flex items-center gap-3">
-                <span>Xin chào,
-                    <b sec:authentication="name"></b>
-                </span>
-
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}"
-           class="bg-yellow-400 text-black px-3 py-1 rounded text-sm">
-          Admin
-        </a>
-
-        <form th:action="@{/logout}" method="post">
-          <button class="bg-red-500 px-3 py-1 rounded text-sm">
-            Đăng xuất
-          </button>
-        </form>
-      </div>
-
-      <div sec:authorize="!isAuthenticated()">
-        <a th:href="@{/login}" class="bg-white text-indigo-700 px-4 py-1 rounded">
-          Đăng nhập
-        </a>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<div class="relative max-w-7xl mx-auto mt-6 overflow-hidden rounded-xl shadow">
-  <div id="carousel" class="flex transition-transform duration-700">
-
-    <div th:each="s : ${listSlide}" class="min-w-full relative">
-      <a th:href="@{${s.lienket}}">
-        <img th:src="@{${s.hinhanh}}" class="w-full h-[380px] object-cover">
-
-        <div class="absolute inset-0 bg-black/40 flex items-end">
-          <h2 class="text-white text-2xl font-bold p-6"
-              th:text="${s.tieude}">
-          </h2>
-        </div>
-      </a>
-    </div>
-
-  </div>
-
-  <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2
-            bg-white/70 p-3 rounded-full">❮</button>
-
-  <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2
-            bg-white/70 p-3 rounded-full">❯</button>
-</div>
+<div th:replace="layout/fragments :: slide"></div>
 
 <div class="max-w-7xl mx-auto mt-12 px-4">
   <h2 class="text-2xl font-bold mb-6">🔥 Hãng nổi bật</h2>
@@ -86,7 +35,7 @@
       <p class="text-indigo-600 text-xl font-semibold mb-4" th:text="${#numbers.formatDecimal(sp.gia, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></p>
       <p class="mb-4" th:text="${sp.mota}"></p>
 
-      <a href="#" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+      <a th:href="@{/cart/add/{id}(id=${sp.mamt})}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
         Thêm vào giỏ hàng
       </a>
     </div>
@@ -94,30 +43,9 @@
 
 </div>
 
-<footer class="bg-gray-800 text-gray-300 mt-20 p-6 text-center">
-  © 2025 Web Bán Máy Tính | All Rights Reserved
-</footer>
+<div th:replace="layout/fragments :: footer"></div>
 
-<script>
-  let index = 0;
-  const carousel = document.getElementById("carousel");
-  const total = carousel.children.length;
-
-  function showSlide(i) {
-    index = (i + total) % total;
-    carousel.style.transform = `translateX(${-index * 100}%)`;
-  }
-
-  function nextSlide() {
-    showSlide(index + 1);
-  }
-
-  function prevSlide() {
-    showSlide(index - 1);
-  }
-
-  setInterval(nextSlide, 4000);
-</script>
+<div th:replace="layout/fragments :: script"></div>
 
 </body>
 </html>

@@ -38,7 +38,7 @@ public class SanphamController {
         List<Maytinh> listSP = maytinhRepository.findAllByHang_Duongdan(duongDan);
 
         model.addAttribute("brands", hangRepository.findAll());
-        model.addAttribute("listSlide", slideRepository.findByTrangthaiTrue());
+        model.addAttribute("listSlide", slideRepository.findByTrangthaiIsTrue());
         model.addAttribute("listMaytinh", mayTinhRepository.findTop8ByOrderByMamtDesc());
 
         model.addAttribute("hang", hang);
@@ -55,7 +55,7 @@ public class SanphamController {
         if(sp == null) return "redirect:/";
 
         model.addAttribute("brands", hangRepository.findAll());
-        model.addAttribute("listSlide", slideRepository.findByTrangthaiTrue());
+        model.addAttribute("listSlide", slideRepository.findByTrangthaiIsTrue());
         model.addAttribute("listMaytinh", mayTinhRepository.findTop8ByOrderByMamtDesc());
         model.addAttribute("sp", sp);
         return "chitiet";
