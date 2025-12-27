@@ -18,64 +18,85 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
 
-@Controller
+@Controller                        // Controller xử lý chức năng thanh toán (checkout)
 public class CheckoutController {
 
     @Autowired
-    CartService cartService;
+    CartService cartService;        // Service quản lý giỏ hàng
 
     @Autowired
-    HoadonRepository hoadonRepo;
+    HoadonRepository hoadonRepo;    // Repository thao tác dữ liệu hóa đơn
 
     @Autowired
-    KhachhangRepository khachhangRepository;
-    @Autowired
-    TaikhoanRepository taikhoanRepository;
+    KhachhangRepository khachhangRepository;   // Repository thao tác dữ liệu khách hàng
 
     @Autowired
-    CthdRepository cthdRepo;
+    TaikhoanRepository taikhoanRepository;     // Repository thao tác dữ liệu tài khoản
 
     @Autowired
-    HttpSession session;
+    CthdRepository cthdRepo;        // Repository thao tác chi tiết hóa đơn
+
+    @Autowired
+    HttpSession session;            // Session (hiện tại chưa sử dụng trực tiếp)
 
     @GetMapping("/checkout")
     public String checkout(Model model) {
+
+        // Lấy danh sách sản phẩm trong giỏ hàng
         model.addAttribute("cart", cartService.getItems());
+
+        // Lấy tổng tiền giỏ hàng
         model.addAttribute("total", cartService.getTotal());
+
+        // Trả về trang checkout
         return "checkout";
     }
 
     @PostMapping("/checkout")
     public String processCheckout(Authentication authentication, Model model) {
+
+        // Nếu chưa đăng nhập → chuyển về trang login
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
+
+        // Lấy thông tin user đang đăng nhập
         User userDetails = (User) authentication.getPrincipal();
 
-        Integer makh = khachhangRepository.findByTaikhoan(taikhoanRepository.findByTaikhoan(userDetails.getUsername())).getMakh();
+        // Lấy mã khách hàng (makh) từ username đang đăng nhập
+        Integer makh = khachhangRepository
+                .findByTaikhoan(
+                        taikhoanRepository.findByTaikhoan(userDetails.getUsername())
+                )
+                .getMakh();
 
+        // Nếu không tìm thấy khách hàng → yêu cầu đăng nhập lại
         if (makh == null) {
             return "redirect:/login";
         }
 
+        // Tạo hóa đơn mới
         Hoadon hd = new Hoadon();
-        hd.setKhachhang(makh);
-        hd.setNgaydat(new Date());
-        hd.setTrangthai(1);
+        hd.setKhachhang(makh);      // Gán khách hàng
+        hd.setNgaydat(new Date());  // Ngày đặt hàng
+        hd.setTrangthai(1);         // Trạng thái ban đầu (đơn mới)
 
+        // Lưu hóa đơn vào DB
         Hoadon saved = hoadonRepo.save(hd);
 
+        // Lưu từng sản phẩm trong giỏ vào bảng chi tiết hóa đơn
         cartService.getItems().forEach(item -> {
             Cthd ct = new Cthd();
-            ct.setSohd(saved.getSohd());
-            ct.setMaytinh(item.getId());
-            ct.setSoluong(item.getSoluong());
+            ct.setSohd(saved.getSohd());      // Mã hóa đơn
+            ct.setMaytinh(item.getId());      // Mã sản phẩm
+            ct.setSoluong(item.getSoluong()); // Số lượng
             cthdRepo.save(ct);
         });
 
+        // Xóa giỏ hàng sau khi đặt hàng thành công
         cartService.clear();
 
-        model.addAttribute("sohd", saved.getSohd());
+        // Điều hướng sang trang xem đơn hàng
         return "redirect:/order/" + saved.getSohd();
     }
 }
